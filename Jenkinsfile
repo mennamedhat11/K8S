@@ -21,7 +21,7 @@ pipeline {
         stage('Deploy to K8s') {
             steps {
                 withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
-                    sh 'sed -i "s|image:.*|image: $IMAGE|" K8S/deployment.yaml'
+                    sh 'sed -i "s|image:.*|image: $IMAGE|" K8S/Deployment.yaml'
                     sh 'kubectl apply -f K8S/'
                     sh 'kubectl rollout status deployment/myapp --timeout=120s'
                 }
