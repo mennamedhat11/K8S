@@ -11,9 +11,9 @@ pipeline {
         }
         stage('Push Image') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub',
+                withCredentials([usernamePassword(credentialsId: 'Docker',
                     usernameVariable: 'U', passwordVariable: 'P')]) {
-                    sh 'echo $P | docker login -u $U --password-stdin'
+                    sh 'echo "$P" | docker login -u "$U" --password-stdin'
                     sh 'docker push $IMAGE'
                 }
             }
@@ -21,9 +21,9 @@ pipeline {
         stage('Deploy to K8s') {
             steps {
                 withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
-                    sh 'sed -i "s|image:.*|image: $IMAGE|" k8s/Deployment.yaml'
-                    sh 'kubectl apply -f k8s/'
-                    sh 'kubectl rollout status deployment/myapp'
+                    sh 'sed -i "s|image:.*|image: $IMAGE|" K8S/deployment.yaml'
+                    sh 'kubectl apply -f K8S/'
+                    sh 'kubectl rollout status deployment/myapp --timeout=120s'
                 }
             }
         }
