@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        IMAGE = "YOUR_DOCKERHUB_USER/myapp:${BUILD_NUMBER}"
+        IMAGE = "mennamedhat123/myapp:${BUILD_NUMBER}"
     }
     stages {
         stage('Build Image') {
